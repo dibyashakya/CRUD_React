@@ -1,0 +1,16 @@
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #f8fafc;
+  font-family: "Quicksand", system-ui, sans-serif;
+  font-weight: 100;
+  line-height: 1.2;
+  color: #2a2f33;
+  font-size: large;
+}
