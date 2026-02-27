@@ -3,10 +3,20 @@ import { groceryItems } from "./data/groceryItems.js";
 import "./App.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { nanoid } from "nanoid";
+import Form from "./components/Form";
 
 const App = () => {
-  const [items, setItems] = useState;
+  const [items, setItems] = useState(groceryItems);
+  const [editId, setEditId] = useState(null);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (editId && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [editId]);
   const editCompleted = (itemId) => {
     const newItems = items.map((item) => {
       if (item.id === itemId) {
@@ -23,13 +33,43 @@ const App = () => {
     toast.success("Deleted");
   };
 
+  const addItem = (itemName) => {
+    const newItem = {
+      name: itemName,
+      completed: false,
+      id: nanoid(),
+    };
+    const newItems = [...items, newItem];
+    setItems(newItems);
+    toast.success("Added");
+  };
+
+  const updateItemName = (newName) => {
+    const newItems = items.map((item) => {
+      if (item.id === editId) {
+        return { ...item, name: newName };
+      }
+      return item;
+    });
+    setItems(newItems);
+    setEditId(null);
+    toast.success("item updated");
+  };
   return (
     <section className="section-center">
-      <ToastContainer position="center"></ToastContainer>
+      <ToastContainer position="top-center"></ToastContainer>
+      <Form
+        addItem={addItem}
+        updateItemName={updateItemName}
+        editItemId={editId}
+        itemToEdit={items.find((item) => item.id === editId)}
+        inputRef={inputRef}
+      ></Form>
       <Items
         items={groceryItems}
         editCompleted={editCompleted}
         removeItem={removeItem}
+        setEditId={setEditId}
       ></Items>
     </section>
   );

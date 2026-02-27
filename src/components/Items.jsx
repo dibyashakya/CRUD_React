@@ -1,6 +1,6 @@
 import SingleItem from "./SingleItem";
 
-const Items = ({ items, editCompleted }) => {
+const Items = ({ items, editCompleted, removeItem, setEditId }) => {
   return (
     <div className="items">
       {items.map((item) => {
@@ -9,6 +9,8 @@ const Items = ({ items, editCompleted }) => {
             key={items.id}
             item={item}
             editCompleted={editCompleted}
+            removeItem={removeItem}
+            setEditId={setEditId}
           ></SingleItem>
         );
       })}
