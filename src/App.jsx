@@ -7,8 +7,20 @@ import { useState, useRef, useEffect } from "react";
 import { nanoid } from "nanoid";
 import Form from "./components/Form";
 
+const getLocalStorage = () => {
+  let list = localStorage.getItem("grocery-list");
+  if (list) {
+    return JSON.parse(list);
+  }
+  return [];
+};
+
+const setLocalStorage = (items) => {
+  localStorage.setItem("grocery-list", JSON.stringify(items));
+};
+const initialList = getLocalStorage();
 const App = () => {
-  const [items, setItems] = useState(groceryItems);
+  const [items, setItems] = useState(initialList);
   const [editId, setEditId] = useState(null);
   const inputRef = useRef(null);
 
@@ -25,11 +37,14 @@ const App = () => {
       return item;
     });
     setItems(newItems);
+    setLocalStorage(newItems);
   };
 
   const removeItem = (itemId) => {
     const newItems = items.filer((item) => item.id !== itemId);
     setItems(newItems);
+    setLocalStorage(newItems);
+
     toast.success("Deleted");
   };
 
@@ -41,10 +56,11 @@ const App = () => {
     };
     const newItems = [...items, newItem];
     setItems(newItems);
+    setLocalStorage(newItems);
     toast.success("Added");
   };
 
-  const updateItemName = (newName) => {
+  const updateItemName = (itemEditName) => {
     const newItems = items.map((item) => {
       if (item.id === editId) {
         return { ...item, name: newName };
@@ -53,6 +69,7 @@ const App = () => {
     });
     setItems(newItems);
     setEditId(null);
+    setLocalStorage(newItems);
     toast.success("item updated");
   };
   return (
