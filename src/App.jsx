@@ -41,7 +41,7 @@ const App = () => {
   };
 
   const removeItem = (itemId) => {
-    const newItems = items.filer((item) => item.id !== itemId);
+    const newItems = items.filter((item) => item.id !== itemId);
     setItems(newItems);
     setLocalStorage(newItems);
 
@@ -63,7 +63,7 @@ const App = () => {
   const updateItemName = (itemEditName) => {
     const newItems = items.map((item) => {
       if (item.id === editId) {
-        return { ...item, name: newName };
+        return { ...item, name: itemEditName };
       }
       return item;
     });
@@ -83,7 +83,7 @@ const App = () => {
         inputRef={inputRef}
       ></Form>
       <Items
-        items={groceryItems}
+        items={items}
         editCompleted={editCompleted}
         removeItem={removeItem}
         setEditId={setEditId}

@@ -6,7 +6,7 @@ const Items = ({ items, editCompleted, removeItem, setEditId }) => {
       {items.map((item) => {
         return (
           <SingleItem
-            key={items.id}
+            key={item.id}
             item={item}
             editCompleted={editCompleted}
             removeItem={removeItem}
